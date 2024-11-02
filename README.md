@@ -1,6 +1,7 @@
-## [url-shortener-api.azurewebsites.net](https://url-shortener-api.azurewebsites.net)
+## [URL Shortener API](https://url-shortener-api.azurewebsites.net)
+## [URL Shortener Angular Demo](https://mockme.azurewebsites.net/shortly)
 
-![image](https://github.com/user-attachments/assets/038e483b-83fe-42da-8095-0707b11d0312)
+![image](https://github.com/user-attachments/assets/78d74bec-6676-4c37-b09a-77866e7f5a08)
 
 ### Technologies:
 I used C# .NET8 for the API backend and Angular 8 for the frontend. 
@@ -34,7 +35,7 @@ Describe your approach to designing and implementing a URL shortener service, fo
 ### Challenge 2 
 Create a UML Sequence Diagram showing how short links will be created by ClientA and accessed by ClientB.
 * UML Diagram
-![image](https://github.com/user-attachments/assets/f42dfb88-13b3-4c86-804c-d8e9202fa390)
+![image](https://github.com/user-attachments/assets/609fe8f7-237b-411d-84d7-b69e166d1278)
 
 ### Challenge 3 
 Develop a class diagram representing the structure of your URL Shortener implementation. 
