@@ -53,15 +53,15 @@ namespace URL.Shortener.API
             services.AddMemoryCache();
 
             // Use SqlServer localdb ConnectionString
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(
-            //        Configuration["ConnectionStrings:DefaultConnection"],
-            //        b => b.MigrationsAssembly("URL.Shortener.API")));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration["ConnectionStrings:DefaultConnection"],
+                    b => b.MigrationsAssembly("URL.Shortener.API")));
 
             //Use InMemoryDatabase
-            services.AddDbContext<ApplicationDbContext>(o => {
-                o.UseInMemoryDatabase("ShortenedUrl");
-            });
+            //services.AddDbContext<ApplicationDbContext>(o => {
+            //    o.UseInMemoryDatabase("ShortenedUrl");
+            //});
 
             services.AddSingleton(provider => settings.Get<URLShortenerSettings>());
             services.AddTransient<IShortenedUrlRepository, ShortenedUrlRepository>();
