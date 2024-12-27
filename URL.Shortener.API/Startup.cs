@@ -33,7 +33,7 @@ namespace URL.Shortener.API
             {
                 options.AddPolicy("CorsPolicy",
                     // Angular app origin URL
-                    builder => builder.WithOrigins(Configuration["CorsUrl"])
+                    builder => builder.WithOrigins(Configuration["CorsUrl"].Split(';'))
                         .AllowAnyMethod()
                         .AllowAnyHeader()
                         .AllowCredentials());
