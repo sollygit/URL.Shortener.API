@@ -50,8 +50,6 @@ namespace URL.Shortener.API
             // Configurations
             services.Configure<URLShortenerSettings>(settings);
 
-            services.AddMemoryCache();
-
             // Use SqlServer localdb ConnectionString
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -59,6 +57,7 @@ namespace URL.Shortener.API
                     b => b.MigrationsAssembly("URL.Shortener.API")));
 
             //Use InMemoryDatabase
+            //services.AddMemoryCache();
             //services.AddDbContext<ApplicationDbContext>(o => {
             //    o.UseInMemoryDatabase("ShortenedUrl");
             //});
