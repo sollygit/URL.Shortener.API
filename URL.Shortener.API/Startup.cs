@@ -1,14 +1,19 @@
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
+using URL.Shortener.API.Authorization;
 using URL.Shortener.API.Services;
 using URL.Shortener.API.Settings;
 using URL.Shortener.Interface;
@@ -29,17 +34,32 @@ namespace URL.Shortener.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
+            services.AddCors(options => {
                 options.AddPolicy("CorsPolicy",
-                    // Angular app origin URL
-                    builder => builder.WithOrigins(Configuration["CorsUrl"].Split(';'))
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials());
+                    builder => builder
+                    .WithOrigins(Configuration["CorsUrl"].Split(';'))
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
             });
 
-            // Mapping profile setup
+            var issuer = $"https://{Configuration["Auth0:Domain"]}/";
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => {
+                    options.Authority = issuer;
+                    options.Audience = Configuration["Auth0:Audience"];
+                    options.TokenValidationParameters = new TokenValidationParameters 
+                    {
+                        NameClaimType = ClaimTypes.NameIdentifier
+                    };
+                });
+
+            services.AddAuthorization(options =>{
+                options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", issuer)));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
             Mapper.Initialize(cfg =>
             {
                 cfg.AddProfile<AutoMapperProfile>();
@@ -55,12 +75,6 @@ namespace URL.Shortener.API
                 options.UseSqlServer(
                     Configuration["ConnectionStrings:DefaultConnection"],
                     b => b.MigrationsAssembly("URL.Shortener.API")));
-
-            //Use InMemoryDatabase
-            //services.AddMemoryCache();
-            //services.AddDbContext<ApplicationDbContext>(o => {
-            //    o.UseInMemoryDatabase("ShortenedUrl");
-            //});
 
             services.AddSingleton(provider => settings.Get<URLShortenerSettings>());
             services.AddTransient<IShortenedUrlRepository, ShortenedUrlRepository>();
@@ -102,6 +116,7 @@ namespace URL.Shortener.API
                 c.RoutePrefix = string.Empty;
             });
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

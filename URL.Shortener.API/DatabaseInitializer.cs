@@ -52,7 +52,7 @@ namespace URL.Shortener.API
             if (!await _context.ShortenedUrls.AnyAsync())
             {
                 // Generage 5 fake urls to init DB
-                var items = ShortenerUtil.ShortenedUrls(5, _settings.Alphabet);
+                var items = ShortenerUtil.ShortenedUrls(10, _settings.Alphabet);
                 await _context.ShortenedUrls.AddRangeAsync(items);
                 _logger.LogInformation("SeedShortenedUrls completed");
             }

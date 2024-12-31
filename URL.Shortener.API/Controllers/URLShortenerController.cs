@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using URL.Shortener.Interface;
@@ -18,6 +19,22 @@ namespace URL.Shortener.API.Controllers
 
         [HttpGet()]
         public async Task<IActionResult> GetAllAsync()
+        {
+            var items = await service.GetAllAsync();
+            return new OkObjectResult(items);
+        }
+
+        [HttpGet("protected")]
+        [Authorize]
+        public async Task<IActionResult> GetAllProtectedAsync()
+        {
+            var items = await service.GetAllAsync();
+            return new OkObjectResult(items);
+        }
+
+        [HttpGet("secured")]
+        [Authorize("read:messages")]
+        public async Task<IActionResult> GetAllSecuredAsync()
         {
             var items = await service.GetAllAsync();
             return new OkObjectResult(items);
