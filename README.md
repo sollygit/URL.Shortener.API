@@ -1,5 +1,6 @@
 ## [URL Shortener API](https://url-shortener-api.azurewebsites.net)
-## [URL Shortener Angular Demo](https://mockme.azurewebsites.net/shortly)
+## [URL Shortener APP](https://url-shortener-app.azurewebsites.net)
+## [URL Shortener Angular Demo](https://mockme-app.azurewebsites.net/shortly)
 
 ![image](https://github.com/user-attachments/assets/78d74bec-6676-4c37-b09a-77866e7f5a08)
 
