@@ -16,9 +16,9 @@ namespace URL.Shortener.API.Migrations
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
-                    LongUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShortUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LongUrl = table.Column<string>(type: "nvarchar(500)", maxLength:500, nullable: false),
+                    ShortUrl = table.Column<string>(type: "nvarchar(50)", maxLength:50, nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(50)", maxLength:50, nullable: true),
                     CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
