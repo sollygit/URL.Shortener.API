@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace URL.Shortener.API.Controllers
         }
 
         [HttpGet()]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllAsync()
         {
             var items = await service.GetAllAsync();
@@ -26,6 +28,8 @@ namespace URL.Shortener.API.Controllers
 
         [HttpGet("protected")]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAllProtectedAsync()
         {
             var items = await service.GetAllAsync();
@@ -34,6 +38,9 @@ namespace URL.Shortener.API.Controllers
 
         [HttpGet("secured")]
         [Authorize("read:messages")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAllSecuredAsync()
         {
             var items = await service.GetAllAsync();
