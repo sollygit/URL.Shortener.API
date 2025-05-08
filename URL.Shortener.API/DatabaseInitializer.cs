@@ -41,7 +41,7 @@ namespace URL.Shortener.API
                     if (task.IsFaulted) {
                         var exceptions = task.Exception.Flatten();
                         var exception = exceptions.InnerExceptions.FirstOrDefault();
-                        _logger.LogError(exception, "SeedAsync() exception was thrown");
+                        _logger.LogError(exception, "SeedAsync exception was thrown");
                     }
                 });
         }
